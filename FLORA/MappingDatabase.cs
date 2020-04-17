@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using LiteDB;
 
 namespace FLORA
 {
     class MappingDatabase
     {
-        private LiteDatabase _mappingDatabase;
+        private readonly LiteDatabase _mappingDatabase;
 
         public MappingDatabase(string filename)
         {
@@ -31,26 +28,20 @@ namespace FLORA
             var mappingKey = mappingTable.FindOne(map => map.YarnVersion == yarnVersion.Version);
             var versionKey = mappingKey.TableName;
 
-            return GetMappingSet(versionKey);
+            return GetMappingSet(yarnVersion, versionKey);
         }
 
-        private MappingSet GetMappingSet(string tableName)
+        private MappingSet GetMappingSet(YarnVersion yarnVersion, string tableName)
         {
-            var mappingSet = new MappingSet
-            {
-                Classes = _mappingDatabase.GetCollection<Mapping>($"{tableName}_classes"),
-                Fields = _mappingDatabase.GetCollection<Mapping>($"{tableName}_fields"),
-                Methods = _mappingDatabase.GetCollection<Mapping>($"{tableName}_methods")
-            };
-
-            mappingSet.Classes.EnsureIndex(mapping => mapping.IntermediaryName);
-            mappingSet.Fields.EnsureIndex(mapping => mapping.IntermediaryName);
-            mappingSet.Methods.EnsureIndex(mapping => mapping.IntermediaryName);
-
-            return mappingSet;
+            return new MappingSet(
+                yarnVersion,
+                _mappingDatabase.GetCollection<Mapping>($"{tableName}_classes"),
+                _mappingDatabase.GetCollection<Mapping>($"{tableName}_fields"),
+                _mappingDatabase.GetCollection<Mapping>($"{tableName}_methods")
+            );
         }
 
-        public MappingSet CreateMappingSet(YarnVersion yarnVersion, string[] mappings)
+        public MappingSet CreateMappingSet(YarnVersion yarnVersion, string[] mappingDescriptions)
         {
             var mappingTable = _mappingDatabase.GetCollection<Mappings>("mappings");
 
@@ -62,29 +53,53 @@ namespace FLORA
                 TableName = versionKey
             });
 
-            var mappingSet = GetMappingSet(versionKey);
+            var mappingSet = GetMappingSet(yarnVersion, versionKey);
 
-            foreach (var mapping in mappings)
+            var classes = new List<Mapping>();
+            var fields = new List<Mapping>();
+            var methods = new List<Mapping>();
+            
+            foreach (var mapping in mappingDescriptions)
             {
                 var columns = mapping.Split('\t');
 
                 switch (columns[0])
                 {
                     case "CLASS":
-                        mappingSet.Classes.Insert(CreateMapping(columns));
+                        // CLASS <tab> officialName <tab> intermediaryName <tab> mappedName
+                        classes.Add(new Mapping
+                        {
+                            OfficialName = columns[1],
+                            IntermediaryName = columns[2].Split('/').Last(),
+                            MappedName = columns[3].Split('/').Last()
+                        });
                         break;
                     case "FIELD":
-                        mappingSet.Fields.Insert(CreateMapping(columns));
+                        // FIELD <tab> officialNameOfParent <tab> typeSignature <tab> officialName <tab> intermediaryName <tab> mappedName
+                        fields.Add(new Mapping
+                        {
+                            ParentOfficialName = columns[1],
+                            OfficialName = columns[3],
+                            IntermediaryName = columns[4].Split('/').Last(),
+                            MappedName = columns[5].Split('/').Last()
+                        });
                         break;
                     case "METHOD":
-                        mappingSet.Methods.Insert(CreateMapping(columns));
+                        // METHOD <tab> officialNameOfParent <tab> methodSignature <tab> officialName <tab> intermediaryName <tab> mappedName
+                        methods.Add(new Mapping
+                        {
+                            ParentOfficialName = columns[1],
+                            OfficialName = columns[3],
+                            IntermediaryName = columns[4].Split('/').Last(),
+                            MappedName = columns[5].Split('/').Last()
+                        });
                         break;
                 }
             }
 
+            mappingSet.InsertMappings(classes, fields, methods);
+
             return mappingSet;
         }
-
-        private static Mapping CreateMapping(string[] columns) => new Mapping { IntermediaryName = columns[2], MappedName = columns[3] };
     }
 }

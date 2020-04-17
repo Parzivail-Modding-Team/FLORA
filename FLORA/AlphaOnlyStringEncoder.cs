@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FLORA
+﻿namespace FLORA
 {
     /// <summary>
     /// Provides functions to translate an arbitrary string to a unique, reversible sequence

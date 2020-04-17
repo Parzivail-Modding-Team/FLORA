@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
 
 namespace FLORA
 {
+    [DataContract]
     public class YarnVersion
     {
-        [JsonProperty("gameVersion")]
+        [DataMember(Name = "gameVersion")]
         public string GameVersion { get; set; }
         
-        [JsonProperty("separator")]
+        [DataMember(Name = "separator")]
         public string Separator { get; set; }
         
-        [JsonProperty("build")]
+        [DataMember(Name = "build")]
         public int Build { get; set; }
         
-        [JsonProperty("maven")]
+        [DataMember(Name = "maven")]
         public string Maven { get; set; }
         
-        [JsonProperty("version")]
+        [DataMember(Name = "version")]
         public string Version { get; set; }
         
-        [JsonProperty("stable")]
+        [DataMember(Name = "stable")]
         public bool Stable { get; set; }
     }
 }

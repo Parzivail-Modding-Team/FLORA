@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLORA", "FLORA\FLORA.csproj", "{D825F5FA-BC2A-4A99-BDA6-08ED4928A802}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLORA", "FLORA\FLORA.csproj", "{09BD5F05-9B85-4133-BCF4-7A43B774C62F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D825F5FA-BC2A-4A99-BDA6-08ED4928A802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D825F5FA-BC2A-4A99-BDA6-08ED4928A802}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D825F5FA-BC2A-4A99-BDA6-08ED4928A802}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D825F5FA-BC2A-4A99-BDA6-08ED4928A802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09BD5F05-9B85-4133-BCF4-7A43B774C62F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09BD5F05-9B85-4133-BCF4-7A43B774C62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09BD5F05-9B85-4133-BCF4-7A43B774C62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09BD5F05-9B85-4133-BCF4-7A43B774C62F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8AB88399-EF14-4FF0-91BD-6412CB61268E}
+		SolutionGuid = {67127A54-F57F-45E6-8721-E1D95B9FFD8A}
 	EndGlobalSection
 EndGlobal
