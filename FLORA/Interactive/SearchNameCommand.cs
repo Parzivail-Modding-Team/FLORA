@@ -5,7 +5,7 @@ using Pastel;
 
 namespace FLORA.Interactive
 {
-    [InteractiveCommandDesc("search", "search <mapping>", "Searches for the given mapped, intermediary, or official (classes only) name")]
+    [InteractiveCommandDesc("search", "search <mapping>", "Searches for the given mapped, intermediary, or official (classes only) name.")]
     internal class SearchNameCommand : InteractiveCommand
     {
         /// <inheritdoc />
@@ -22,7 +22,7 @@ namespace FLORA.Interactive
                 return;
             }
 
-            var mappingSource = InteractiveMapper.GetMappingSource();
+            var mappingSource = InteractiveMapper.GetSelectedMappingSource();
             if (mappingSource == null)
                 return;
 

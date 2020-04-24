@@ -13,7 +13,9 @@ namespace FLORA
         private static readonly Stack<string> CategoryStack = new Stack<string>();
         private static int _indentLevel;
 
-        public static void Log(object message) => Log(LogLevel.Info, message);
+        public static void Log(object message) => Log(LogLevel.Trace, message);
+
+        public static void Info(object message) => Log(LogLevel.Info, message);
 
         public static void Warn(object message) => Log(LogLevel.Warning, message);
 
@@ -32,8 +34,11 @@ namespace FLORA
             string header;
             switch (level)
             {
+                case LogLevel.Trace:
+                    header = "@";
+                    break;
                 case LogLevel.Info:
-                    header = "-";
+                    header = "+";
                     break;
                 case LogLevel.Warning:
                     header = "!";
@@ -52,8 +57,10 @@ namespace FLORA
         {
             switch (level)
             {
-                case LogLevel.Info:
+                case LogLevel.Trace:
                     return null;
+                case LogLevel.Info:
+                    return Color.ForestGreen;
                 case LogLevel.Warning:
                     return Color.Yellow;
                 case LogLevel.Error:
@@ -86,6 +93,7 @@ namespace FLORA
 
     enum LogLevel
     {
+        Trace,
         Info,
         Warning,
         Error

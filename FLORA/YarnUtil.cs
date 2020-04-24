@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using FLORA;
 
-static internal class YarnUtil
+internal static class YarnUtil
 {
     public static string[] GetYarnMappings(YarnVersion version)
     {

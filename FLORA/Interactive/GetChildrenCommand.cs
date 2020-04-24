@@ -5,7 +5,7 @@ using Pastel;
 
 namespace FLORA.Interactive
 {
-    [InteractiveCommandDesc("children", "children <mapping>", "Searches for the given mapped, intermediary, or official name")]
+    [InteractiveCommandDesc("children", "children <mapping>", "Searches for children of the class given by a mapped, intermediary, or official name.")]
     internal class GetChildrenCommand : InteractiveCommand
     {
         /// <inheritdoc />
@@ -22,7 +22,7 @@ namespace FLORA.Interactive
                 return;
             }
 
-            var mappingSource = InteractiveMapper.GetMappingSource();
+            var mappingSource = InteractiveMapper.GetSelectedMappingSource();
             if (mappingSource == null)
                 return;
 

@@ -5,7 +5,7 @@ using Pastel;
 
 namespace FLORA.Interactive
 {
-    [InteractiveCommandDesc("mapstr", "mapstr <string>", "Maps the intermediate names in the given string")]
+    [InteractiveCommandDesc("mapstr", "mapstr <string>", "Maps the intermediate names in the given string.")]
     internal class MapStringCommand : InteractiveCommand
     {
         /// <inheritdoc />
@@ -22,11 +22,11 @@ namespace FLORA.Interactive
                 return;
             }
 
-            var mappingSource = InteractiveMapper.GetMappingSource();
+            var mappingSource = InteractiveMapper.GetSelectedMappingSource();
             if (mappingSource == null)
                 return;
 
-            var mapped = Program.MapString(mappingSource, Args);
+            var mapped = Mapper.MapString(mappingSource, Args);
 
             Lumberjack.Log("Mapped string:");
             Lumberjack.Log($"\t{mapped}".Pastel(Color.White));

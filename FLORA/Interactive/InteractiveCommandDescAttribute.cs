@@ -6,13 +6,13 @@ namespace FLORA.Interactive
     {
         public string Name { get; }
         public string Usage { get; }
-        public string Help { get; }
+        public string QuickHelp { get; }
 
-        public InteractiveCommandDescAttribute(string name, string usage, string help)
+        public InteractiveCommandDescAttribute(string name, string usage, string quickHelp)
         {
             Name = name;
             Usage = usage;
-            Help = help;
+            QuickHelp = quickHelp;
         }
     }
 }

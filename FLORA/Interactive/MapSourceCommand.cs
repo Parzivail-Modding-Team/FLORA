@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FLORA.Interactive
 {
-    [InteractiveCommandDesc("mapsrc", "mapsrc <filename or yarn version string>", "Selects a mapping source")]
+    [InteractiveCommandDesc("mapsrc", "mapsrc <filename or yarn version string>", "Selects a mapping source.")]
     internal class MapSourceCommand : InteractiveCommand
     {
         /// <inheritdoc />

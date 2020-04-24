@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FLORA.Interactive
 {
-    [InteractiveCommandDesc("help", "help [command]", "Provides help on one or all commands")]
+    [InteractiveCommandDesc("help", "help [command]", "Provides quick reference for all commands or advanved usage for one command.")]
     internal class HelpCommand : InteractiveCommand
     {
         /// <inheritdoc />
@@ -26,11 +26,12 @@ namespace FLORA.Interactive
                     return;
                 }
 
-                PrintHelp(matchingCommand);
+                var command = (InteractiveCommand)Activator.CreateInstance(matchingCommand.CommandType, string.Empty);
+                command.PrintAdvancedHelp();
             }
             else
-                foreach (var command in commands)
-                    PrintHelp(command);
+                foreach (var command in commands.OrderBy(reference => reference.Description.Name))
+                    PrintHelp(command.Description);
         }
     }
 }

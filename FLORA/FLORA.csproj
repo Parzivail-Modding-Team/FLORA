@@ -58,8 +58,12 @@
     <Compile Include="Interactive\InteractiveCommandDescAttribute.cs" />
     <Compile Include="Interactive\InteractiveMapper.cs" />
     <Compile Include="Interactive\GetChildrenCommand.cs" />
+    <Compile Include="Interactive\MapJarCommand.cs" />
+    <Compile Include="Interactive\YarnVersionsCommand.cs" />
     <Compile Include="Interactive\SearchNameCommand.cs" />
     <Compile Include="Interactive\MapStringCommand.cs" />
+    <Compile Include="JarUtils.cs" />
+    <Compile Include="Mapper.cs" />
     <Compile Include="Mapping\IMappingSource.cs" />
     <Compile Include="FabricJson\JsonUtil.cs" />
     <Compile Include="Mapping\LocalMappingSource.cs" />

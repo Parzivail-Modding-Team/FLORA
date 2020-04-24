@@ -1,5 +1,7 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Drawing;
+using System.Runtime.Serialization;
 using LiteDB;
+using Pastel;
 
 namespace FLORA
 {
@@ -33,5 +35,16 @@ namespace FLORA
         [BsonField("table")]
         [IgnoreDataMember]
         public string TableName { get; set; }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Version} ({Maven}{(Stable ? ", stable" : "")})";
+        }
+
+        public string ToColorfulString()
+        {
+            return $"{Version.Pastel(Color.Orange)} ({Maven}{(Stable ? ", stable".Pastel(Color.ForestGreen) : "")})";
+        }
     }
 }

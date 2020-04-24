@@ -1,22 +1,29 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using Pastel;
 
 namespace FLORA.Interactive
 {
     internal class InteractiveMapper
     {
         private static MappingDatabase _mappingDatabase;
-
-        private static IMappingSource _mappingSource;
+        private static IMappingSource _selectedMappingSource;
 
         public static void Run()
         {
-            Lumberjack.Log("Running interactive mode");
-
             // Load local mapping database
             Lumberjack.Log("Loading mapping database...");
             _mappingDatabase = new MappingDatabase("mappings.db");
 
+            var assy = Assembly.GetExecutingAssembly().GetName();
+            Lumberjack.Info("Fabric Lightweight Obfuscation Remapping Assistant (FLORA)");
+            Lumberjack.Info($"Version {assy.Version} - parzivail");
+            Lumberjack.Info($"Source, issues and discussion: {"https://github.com/Parzivail-Modding-Team/FLORA".Pastel(Color.RoyalBlue)}");
+            Lumberjack.Info("Interactive Mode - \"help\" for commands, \"exit\" to quit.");
+
+            // Enter read-eval-print loop
             InteractiveCommand command;
             do
             {
@@ -29,17 +36,17 @@ namespace FLORA.Interactive
             } while (!(command is ExitCommand));
         }
 
-        public static IMappingSource GetMappingSource()
+        public static IMappingSource GetSelectedMappingSource()
         {
             if (_mappingDatabase.IsUsingLocalFile)
                 return _mappingDatabase.GetMappingSet(null);
-            if (_mappingSource == null) Lumberjack.Error("No mapping source defined! Select one with \"mapsrc\"");
-            return _mappingSource;
+            if (_selectedMappingSource == null) Lumberjack.Error("No mapping source defined! Select one with \"mapsrc\"");
+            return _selectedMappingSource;
         }
 
         public static void SetYarnVersion(YarnVersion version)
         {
-            _mappingSource = _mappingDatabase.GetMappingSet(version);
+            _selectedMappingSource = _mappingDatabase.GetMappingSet(version);
         }
 
         private static InteractiveCommand GetCommand()
@@ -50,7 +57,6 @@ namespace FLORA.Interactive
             if (line == null)
                 return null;
 
-            // Get args from input line, respecting arguments with quotes
             var splitLine = line.Trim().Split(' ');
             var commandName = splitLine[0].ToLower();
             var commandArgs = splitLine.Length == 1 ? null : string.Join(" ", splitLine.Skip(1));

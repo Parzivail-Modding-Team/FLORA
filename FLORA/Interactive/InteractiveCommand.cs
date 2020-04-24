@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace FLORA.Interactive
 {
@@ -25,22 +26,34 @@ namespace FLORA.Interactive
 
         }
 
-        public static void PrintHelp(CommandReference command)
+        public static void PrintHelp(InteractiveCommandDescAttribute commandDescription)
         {
-            Lumberjack.Log(command.Description.Usage);
-            Lumberjack.Log($"\t{command.Description.Help}");
+            Lumberjack.Info(commandDescription.Usage);
+            Lumberjack.Log($"\t{commandDescription.QuickHelp}");
+        }
+
+        public void PrintAdvancedHelp()
+        {
+            PrintHelp(GetCommandDescription());
+        }
+
+        protected InteractiveCommandDescAttribute GetCommandDescription()
+        {
+            return GetType().GetCustomAttribute<InteractiveCommandDescAttribute>();
         }
 
         public void PrintErrorUsage()
         {
-            var commandType = GetType();
-            var commands = GetCommands();
-            var commandTuple = commands.FirstOrDefault(t => t.CommandType == commandType);
+            var commandDescription = GetCommandDescription();
+            Lumberjack.Error($"Invalid arguments! Usage: {commandDescription.Usage}");
+        }
 
-            if (commandTuple == null)
-                throw new ArgumentException(nameof(commandType));
-            
-            Lumberjack.Error($"Invalid arguments! Usage: {commandTuple.Description.Usage}");
+        protected string[] GetUnquotedArgs()
+        {
+            if (Args == null)
+                return Array.Empty<string>();
+            return Regex.Matches(Args, "\"(?<arg>[^\"]+)\"|(?<arg>\\S+)").Cast<Match>()
+                .Select(match => match.Groups["arg"].Value).ToArray();
         }
     }
 }
