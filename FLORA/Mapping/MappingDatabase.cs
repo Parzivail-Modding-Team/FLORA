@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using LiteDB;
 
 namespace FLORA
@@ -7,58 +9,68 @@ namespace FLORA
     class MappingDatabase
     {
         private readonly LiteDatabase _mappingDatabase;
+        private LocalMappingSource _localMappingSource;
+
+        public bool IsUsingLocalFile => _localMappingSource != null;
 
         public MappingDatabase(string filename)
         {
             _mappingDatabase = new LiteDatabase(filename);
         }
 
-        public bool HasMappingSet(YarnVersion yarnVersion)
+        public bool HasMappingSet(YarnVersion requestedVersion)
         {
-            var mappingTable = _mappingDatabase.GetCollection<Mappings>("mappings");
-            return mappingTable.Exists(map => map.YarnVersion == yarnVersion.Version);
+            if (IsUsingLocalFile)
+                return true;
+
+            var mappingTable = _mappingDatabase.GetCollection<YarnVersion>("yarn_versions");
+            return mappingTable.Exists(map => map.Version == requestedVersion.Version);
         }
 
-        public MappingSet GetMappingSet(YarnVersion yarnVersion)
+        public IMappingSource GetMappingSet(YarnVersion requestedVersion)
         {
-            if (!HasMappingSet(yarnVersion))
+            if (IsUsingLocalFile)
+                return _localMappingSource;
+
+            if (!HasMappingSet(requestedVersion))
                 return null;
 
-            var mappingTable = _mappingDatabase.GetCollection<Mappings>("mappings");
-            var mappingKey = mappingTable.FindOne(map => map.YarnVersion == yarnVersion.Version);
+            var mappingTable = _mappingDatabase.GetCollection<YarnVersion>("yarn_versions");
+            var mappingKey = mappingTable.FindOne(map => map.Version == requestedVersion.Version);
             var versionKey = mappingKey.TableName;
 
-            return GetMappingSet(yarnVersion, versionKey);
+            return GetDatabaseMapSet(requestedVersion, versionKey);
         }
 
-        private MappingSet GetMappingSet(YarnVersion yarnVersion, string tableName)
+        private IMappingSource GetDatabaseMapSet(YarnVersion requestedVersion, string tableName)
         {
-            return new MappingSet(
-                yarnVersion,
+            return new DatabaseMappingSource(
+                requestedVersion,
                 _mappingDatabase.GetCollection<Mapping>($"{tableName}_classes"),
                 _mappingDatabase.GetCollection<Mapping>($"{tableName}_fields"),
                 _mappingDatabase.GetCollection<Mapping>($"{tableName}_methods")
             );
         }
 
-        public MappingSet CreateMappingSet(YarnVersion yarnVersion, string[] mappingDescriptions)
+        public IMappingSource CreateMappingSet(YarnVersion requestedVersion, string[] mappingDescriptions)
         {
-            var mappingTable = _mappingDatabase.GetCollection<Mappings>("mappings");
+            var mappingTable = _mappingDatabase.GetCollection<YarnVersion>("yarn_versions");
+            requestedVersion.TableName = AlphaOnlyStringEncoder.Encode(requestedVersion.Version);
+            mappingTable.Insert(requestedVersion);
 
-            var versionKey = AlphaOnlyStringEncoder.Encode(yarnVersion.Version);
+            var mappingSet = GetMappingSet(requestedVersion);
+            var (classes, fields, methods) = ParseMappings(mappingDescriptions);
+            mappingSet.InsertMappings(classes, fields, methods);
 
-            mappingTable.Insert(new Mappings
-            {
-                YarnVersion = yarnVersion.Version,
-                TableName = versionKey
-            });
+            return mappingSet;
+        }
 
-            var mappingSet = GetMappingSet(yarnVersion, versionKey);
-
+        private static (List<Mapping>, List<Mapping>, List<Mapping>) ParseMappings(string[] mappingDescriptions)
+        {
             var classes = new List<Mapping>();
             var fields = new List<Mapping>();
             var methods = new List<Mapping>();
-            
+
             foreach (var mapping in mappingDescriptions)
             {
                 var columns = mapping.Split('\t');
@@ -97,9 +109,20 @@ namespace FLORA
                 }
             }
 
-            mappingSet.InsertMappings(classes, fields, methods);
+            return (classes, fields, methods);
+        }
 
-            return mappingSet;
+        public YarnVersion[] GetYarnVersions()
+        {
+            var mappingTable = _mappingDatabase.GetCollection<YarnVersion>("yarn_versions");
+            return mappingTable.FindAll().ToArray();
+        }
+
+        public void UseLocalFile(string filename)
+        {
+            _localMappingSource = new LocalMappingSource();
+            var (classes, fields, methods) = ParseMappings(File.ReadAllLines(filename));
+            _localMappingSource.InsertMappings(classes, fields, methods);
         }
     }
 }

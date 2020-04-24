@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using LiteDB;
+using Pastel;
 
 namespace FLORA
 {
@@ -22,5 +24,15 @@ namespace FLORA
         
         [BsonField("ms")]
         public string MappedShortName => MappedName.Split('$').Last();
+
+        [BsonIgnore]
+        public string GetMappingString()
+        {
+            var official = OfficialName.Pastel(Color.DarkOrange);
+            var intermediary = IntermediaryName.Pastel(Color.DodgerBlue);
+            var mapped = MappedName.Pastel(Color.LightGreen);
+
+            return $"{official}/{intermediary}/{mapped}";
+        }
     }
 }

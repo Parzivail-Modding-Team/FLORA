@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Serialization" />
@@ -47,15 +48,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlphaOnlyStringEncoder.cs" />
+    <Compile Include="ExitConditions.cs" />
     <Compile Include="FabricJson\FabricModJson.cs" />
-    <Compile Include="JsonUtil.cs" />
-    <Compile Include="Mapping.cs" />
-    <Compile Include="MappingDatabase.cs" />
-    <Compile Include="Mappings.cs" />
-    <Compile Include="MappingSet.cs" />
+    <Compile Include="Interactive\CommandReference.cs" />
+    <Compile Include="Interactive\MapSourceCommand.cs" />
+    <Compile Include="Interactive\ExitCommand.cs" />
+    <Compile Include="Interactive\HelpCommand.cs" />
+    <Compile Include="Interactive\InteractiveCommand.cs" />
+    <Compile Include="Interactive\InteractiveCommandDescAttribute.cs" />
+    <Compile Include="Interactive\InteractiveMapper.cs" />
+    <Compile Include="Interactive\GetChildrenCommand.cs" />
+    <Compile Include="Interactive\SearchNameCommand.cs" />
+    <Compile Include="Interactive\MapStringCommand.cs" />
+    <Compile Include="Mapping\IMappingSource.cs" />
+    <Compile Include="FabricJson\JsonUtil.cs" />
+    <Compile Include="Mapping\LocalMappingSource.cs" />
+    <Compile Include="Lumberjack.cs" />
+    <Compile Include="Mapping\Mapping.cs" />
+    <Compile Include="Mapping\MappingDatabase.cs" />
+    <Compile Include="Mapping\DatabaseMappingSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YarnVersion.cs" />
+    <Compile Include="FabricJson\YarnVersion.cs" />
+    <Compile Include="YarnUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.7.82" />
@@ -63,6 +78,9 @@
       <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="LiteDB" Version="5.0.7" />
+    <PackageReference Include="Pastel">
+      <Version>1.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
