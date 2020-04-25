@@ -117,6 +117,6 @@ The `mapjar` command does not accept the `-v` or `-t` options, as it uses the ma
 
 # Screenshots
 
-![Remapping a jar](https://i.imgur.com/OVdAXzy.png)
+![Remapping a jar](https://i.imgur.com/Te30WgW.png)
 
-![The search and children commands](https://i.imgur.com/FmotXMF.png)
+![The search and children commands](https://i.imgur.com/klTUH0C.png)
