@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mail;
+using System.Linq;
+using System.Text.RegularExpressions;
+using FLORA.Fabric;
 using LiteDB;
 
-namespace FLORA
+namespace FLORA.Mapping
 {
     internal class DatabaseMappingSource : IMappingSource
     {
@@ -75,14 +77,16 @@ namespace FLORA
         {
             var mappings = new List<Mapping>();
 
-            var parentOfficialName = _classes.FindOne(mapping => mapping.IntermediaryName == parent || mapping.MappedName == parent || mapping.OfficialName == parent)?.OfficialName;
+            var parentMapping = _classes.FindOne(mapping => mapping.IntermediaryName == parent || mapping.MappedName == parent || mapping.OfficialName == parent);
 
-            if (parentOfficialName == null)
+            if (parentMapping == null)
                 return Array.Empty<Mapping>();
-
-            mappings.AddRange(_classes.Find(mapping => mapping.ParentOfficialName == parentOfficialName));
-            mappings.AddRange(_fields.Find(mapping => mapping.ParentOfficialName == parentOfficialName));
-            mappings.AddRange(_methods.Find(mapping => mapping.ParentOfficialName == parentOfficialName));
+            
+            var childClassRegex = new Regex("^" + parentMapping.MappedName + "(?:\\$[^$]+)+$", RegexOptions.Compiled);
+            
+            mappings.AddRange(_classes.FindAll().Where(mapping => childClassRegex.IsMatch(mapping.MappedName)));
+            mappings.AddRange(_fields.Find(mapping => mapping.ParentOfficialName == parentMapping.OfficialName));
+            mappings.AddRange(_methods.Find(mapping => mapping.ParentOfficialName == parentMapping.OfficialName));
 
             return mappings.ToArray();
         }

@@ -2,7 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace FLORA
+namespace FLORA.Fabric
 {
     static class JsonUtil
     {

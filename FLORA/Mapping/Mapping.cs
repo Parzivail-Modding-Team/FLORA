@@ -3,7 +3,7 @@ using System.Linq;
 using LiteDB;
 using Pastel;
 
-namespace FLORA
+namespace FLORA.Mapping
 {
     internal class Mapping
     {

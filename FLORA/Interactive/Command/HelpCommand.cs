@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using FLORA.Mapping;
 
-namespace FLORA.Interactive
+namespace FLORA.Interactive.Command
 {
     [InteractiveCommandDesc("help", "help [command]", "Provides quick reference for all commands or advanved usage for one command.")]
     internal class HelpCommand : InteractiveCommand

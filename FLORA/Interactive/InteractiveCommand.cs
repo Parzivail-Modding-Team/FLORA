@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using FLORA.Mapping;
 
 namespace FLORA.Interactive
 {
@@ -32,7 +33,7 @@ namespace FLORA.Interactive
             Lumberjack.Log($"\t{commandDescription.QuickHelp}");
         }
 
-        public void PrintAdvancedHelp()
+        public virtual void PrintAdvancedHelp()
         {
             PrintHelp(GetCommandDescription());
         }
@@ -42,7 +43,7 @@ namespace FLORA.Interactive
             return GetType().GetCustomAttribute<InteractiveCommandDescAttribute>();
         }
 
-        public void PrintErrorUsage()
+        public virtual void PrintErrorUsage()
         {
             var commandDescription = GetCommandDescription();
             Lumberjack.Error($"Invalid arguments! Usage: {commandDescription.Usage}");

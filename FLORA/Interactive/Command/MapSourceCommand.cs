@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using FLORA.Fabric;
+using FLORA.Mapping;
 
-namespace FLORA.Interactive
+namespace FLORA.Interactive.Command
 {
     [InteractiveCommandDesc("mapsrc", "mapsrc <filename or yarn version string>", "Selects a mapping source.")]
     internal class MapSourceCommand : InteractiveCommand
@@ -84,6 +86,24 @@ namespace FLORA.Interactive
             InteractiveMapper.SetYarnVersion(mappingVersion);
             
             Lumberjack.Log($"Using mappings from yarn {version}");
+        }
+
+        /// <inheritdoc />
+        public override void PrintAdvancedHelp()
+        {
+            Lumberjack.Log(GetCommandDescription().Usage);
+            Lumberjack.Log("");
+            Lumberjack.Log("The mapsrc command is used to set which mappings are being used by the interactive");
+            Lumberjack.Log("environment. As a parameter, you can specify a Tiny v1 mapping file or a Yarn version");
+            Lumberjack.Log("string. If the latter is specified, the mappings will be saved to a local mapping");
+            Lumberjack.Log("database (mappings.db) for faster reuse of those mappings. If you do not have an");
+            Lumberjack.Log("internet connection, you are limited to using mappings in a provided Tiny v1 file or");
+            Lumberjack.Log("ones already cached in the database.");
+            Lumberjack.Log("");
+            Lumberjack.Log("Examples:");
+            Lumberjack.Log("");
+            Lumberjack.Info("mapsrc 1.15.2+build.7");
+            Lumberjack.Info("mapsrc my_mappings.tiny");
         }
     }
 }

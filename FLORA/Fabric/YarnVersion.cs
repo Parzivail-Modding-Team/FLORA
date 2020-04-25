@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using LiteDB;
 using Pastel;
 
-namespace FLORA
+namespace FLORA.Fabric
 {
     [DataContract]
     public class YarnVersion

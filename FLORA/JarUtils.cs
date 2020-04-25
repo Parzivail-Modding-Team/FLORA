@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FLORA.FabricJson;
+using FLORA.Fabric;
 
 namespace FLORA
 {

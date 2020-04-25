@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace FLORA.FabricJson
+namespace FLORA.Fabric
 {
     [DataContract]
     public class FabricModJson

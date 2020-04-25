@@ -49,23 +49,23 @@
   <ItemGroup>
     <Compile Include="AlphaOnlyStringEncoder.cs" />
     <Compile Include="ExitConditions.cs" />
-    <Compile Include="FabricJson\FabricModJson.cs" />
+    <Compile Include="Fabric\FabricModJson.cs" />
     <Compile Include="Interactive\CommandReference.cs" />
-    <Compile Include="Interactive\MapSourceCommand.cs" />
-    <Compile Include="Interactive\ExitCommand.cs" />
-    <Compile Include="Interactive\HelpCommand.cs" />
+    <Compile Include="Interactive\Command\MapSourceCommand.cs" />
+    <Compile Include="Interactive\Command\ExitCommand.cs" />
+    <Compile Include="Interactive\Command\HelpCommand.cs" />
     <Compile Include="Interactive\InteractiveCommand.cs" />
     <Compile Include="Interactive\InteractiveCommandDescAttribute.cs" />
     <Compile Include="Interactive\InteractiveMapper.cs" />
-    <Compile Include="Interactive\GetChildrenCommand.cs" />
-    <Compile Include="Interactive\MapJarCommand.cs" />
-    <Compile Include="Interactive\YarnVersionsCommand.cs" />
-    <Compile Include="Interactive\SearchNameCommand.cs" />
-    <Compile Include="Interactive\MapStringCommand.cs" />
+    <Compile Include="Interactive\Command\GetChildrenCommand.cs" />
+    <Compile Include="Interactive\Command\MapJarCommand.cs" />
+    <Compile Include="Interactive\Command\YarnVersionsCommand.cs" />
+    <Compile Include="Interactive\Command\SearchNameCommand.cs" />
+    <Compile Include="Interactive\Command\MapStringCommand.cs" />
     <Compile Include="JarUtils.cs" />
-    <Compile Include="Mapper.cs" />
+    <Compile Include="Mapping\Mapper.cs" />
     <Compile Include="Mapping\IMappingSource.cs" />
-    <Compile Include="FabricJson\JsonUtil.cs" />
+    <Compile Include="Fabric\JsonUtil.cs" />
     <Compile Include="Mapping\LocalMappingSource.cs" />
     <Compile Include="Lumberjack.cs" />
     <Compile Include="Mapping\Mapping.cs" />
@@ -73,8 +73,8 @@
     <Compile Include="Mapping\DatabaseMappingSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FabricJson\YarnVersion.cs" />
-    <Compile Include="YarnUtil.cs" />
+    <Compile Include="Fabric\YarnVersion.cs" />
+    <Compile Include="Fabric\YarnUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.7.82" />

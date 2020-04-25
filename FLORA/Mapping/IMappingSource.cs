@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FLORA
+namespace FLORA.Mapping
 {
     internal interface IMappingSource
     {

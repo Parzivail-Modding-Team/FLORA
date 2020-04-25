@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-namespace FLORA
+namespace FLORA.Mapping
 {
     internal class LocalMappingSource : IMappingSource
     {
@@ -63,14 +64,16 @@ namespace FLORA
         {
             var mappings = new List<Mapping>();
 
-            var parentOfficialName = _classes.FirstOrDefault(mapping => mapping.IntermediaryName == parent || mapping.MappedName == parent || mapping.OfficialName == parent)?.OfficialName;
+            var parentMapping = _classes.FirstOrDefault(mapping => mapping.IntermediaryName == parent || mapping.MappedName == parent || mapping.OfficialName == parent);
 
-            if (parentOfficialName == null)
+            if (parentMapping == null)
                 return Array.Empty<Mapping>();
 
-            mappings.AddRange(_classes.Where(mapping => mapping.ParentOfficialName == parentOfficialName));
-            mappings.AddRange(_fields.Where(mapping => mapping.ParentOfficialName == parentOfficialName));
-            mappings.AddRange(_methods.Where(mapping => mapping.ParentOfficialName == parentOfficialName));
+            var childClassRegex = new Regex("^" + parentMapping.MappedName + "(?:\\$[^$]+)+$", RegexOptions.Compiled);
+
+            mappings.AddRange(_classes.Where(mapping => childClassRegex.IsMatch(mapping.MappedName)));
+            mappings.AddRange(_fields.Where(mapping => mapping.ParentOfficialName == parentMapping.OfficialName));
+            mappings.AddRange(_methods.Where(mapping => mapping.ParentOfficialName == parentMapping.OfficialName));
 
             return mappings.ToArray();
         }

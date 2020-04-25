@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using FLORA.Fabric;
 using LiteDB;
 
-namespace FLORA
+namespace FLORA.Mapping
 {
     class MappingDatabase
     {
@@ -123,6 +123,11 @@ namespace FLORA
             _localMappingSource = new LocalMappingSource();
             var (classes, fields, methods) = ParseMappings(File.ReadAllLines(filename));
             _localMappingSource.InsertMappings(classes, fields, methods);
+        }
+
+        public void ReleaseLocalFile()
+        {
+            _localMappingSource = null;
         }
     }
 }

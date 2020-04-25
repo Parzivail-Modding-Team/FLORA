@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using FLORA.Fabric;
+using FLORA.Interactive.Command;
+using FLORA.Mapping;
 using Pastel;
 
 namespace FLORA.Interactive
@@ -46,6 +49,7 @@ namespace FLORA.Interactive
 
         public static void SetYarnVersion(YarnVersion version)
         {
+            _mappingDatabase.ReleaseLocalFile();
             _selectedMappingSource = _mappingDatabase.GetMappingSet(version);
         }
 

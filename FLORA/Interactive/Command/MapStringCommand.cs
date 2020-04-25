@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
+using FLORA.Mapping;
 using Pastel;
 
-namespace FLORA.Interactive
+namespace FLORA.Interactive.Command
 {
     [InteractiveCommandDesc("mapstr", "mapstr <string>", "Maps the intermediate names in the given string.")]
     internal class MapStringCommand : InteractiveCommand

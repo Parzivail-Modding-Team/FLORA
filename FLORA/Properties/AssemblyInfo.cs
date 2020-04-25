@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FLORA")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Fabric Lightweight Obfuscation Remapping Assistant")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("parzivail")]
 [assembly: AssemblyProduct("FLORA")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

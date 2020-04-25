@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CommandLine;
-using FLORA.FabricJson;
+using FLORA.Fabric;
 using FLORA.Interactive;
+using FLORA.Mapping;
 using Parser = CommandLine.Parser;
 
 namespace FLORA
