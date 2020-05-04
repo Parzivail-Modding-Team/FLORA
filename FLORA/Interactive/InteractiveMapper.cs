@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using FLORA.Fabric;
@@ -18,7 +19,7 @@ namespace FLORA.Interactive
         {
             // Load local mapping database
             Lumberjack.Log("Loading mapping database...");
-            _mappingDatabase = new MappingDatabase("mappings.db");
+            _mappingDatabase = new MappingDatabase(Path.Combine(Program.BaseDirConfig, "mappings.db"));
 
             var assy = Assembly.GetExecutingAssembly().GetName();
             Lumberjack.Info("Fabric Lightweight Obfuscation Remapping Assistant (FLORA)");

@@ -18,6 +18,9 @@ namespace FLORA
     {
         private static MappingDatabase _mappingDatabase;
 
+        public static string BaseDirConfig;
+        public static string BaseDirOutput;
+
         public class Options
         {
             [Option('v', "mappingVersion", Required = false, HelpText = "Target Yarn mapping version. If omitted, will attempt to find the most recent compatible mapping from the mod metadata.")]
@@ -26,10 +29,16 @@ namespace FLORA
             [Option('t', "tiny", Required = false, HelpText = "Tiny v1 mapping file to use. If omitted, will continue with online version discovery (see mappingVersion).")]
             public string LocalTinyFile { get; set; }
 
-            [Value(0, Required = false, HelpText = "The input sources jar or zip file. If omitted, will run in interactive/REPL mode")]
+            [Option('c', "config-dir", Required = false, HelpText = "The directory the configuration files and mapping database will be stored in. If omitted, the current directory will be used.", Default = "./")]
+            public string ConfigDirBase { get; set; }
+
+            [Option('o', "output-dir", Required = false, HelpText = "The directory the configuration files and mapping database will be stored in. If omitted, the current directory will be used.", Default = "./")]
+            public string OutputDirBase { get; set; }
+
+            [Value(0, Required = false, HelpText = "The input sources jar or zip file. If omitted, will run in interactive/REPL mode.")]
             public string InputArchive { get; set; }
 
-            [Value(1, Required = false, HelpText = "The output directory of the mapped sources. If omitted, will create a directory based on the input filename")]
+            [Value(1, Required = false, HelpText = "The output directory of the mapped sources. If omitted, will create a directory based on the input filename.")]
             public string OutputDir { get; set; }
         }
 
@@ -57,6 +66,9 @@ namespace FLORA
         /// </remarks>
         private static void DoRemap(Options args)
         {
+            BaseDirConfig = args.ConfigDirBase;
+            BaseDirOutput = args.OutputDirBase;
+
             if (args.InputArchive == null)
                 InteractiveMapper.Run();
 
@@ -69,7 +81,7 @@ namespace FLORA
 
             // Load local mapping database
             Lumberjack.Log("Loading mapping database...");
-            _mappingDatabase = new MappingDatabase("mappings.db");
+            _mappingDatabase = new MappingDatabase(Path.Combine(BaseDirConfig, "mappings.db"));
 
             // Try to pick a mapping version manually or automatically
             YarnVersion mappingVersion = null;

@@ -20,6 +20,8 @@ namespace FLORA.Mapping
             // Keep the failed mappings to create a report at the end
             var failedMappings = new List<string>();
 
+            destDir = Path.Combine(Program.BaseDirOutput, destDir);
+
             using (var srcZip = ZipFile.OpenRead(srcArchive))
             {
                 foreach (var srcEntry in srcZip.Entries)
